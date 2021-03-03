@@ -14,7 +14,7 @@ import asyncro from 'asyncro';
 import chalk from 'chalk';
 import * as fs from 'fs-extra';
 import * as jest from 'jest';
-import { CLIEngine } from 'eslint';
+import {ESLint} from 'eslint';
 import logError from './logError';
 import path from 'path';
 import execa from 'execa';
@@ -581,30 +581,29 @@ prog
         writeFile: opts['write-file'],
       });
 
-      const cli = new CLIEngine({
+      const eslint = new ESLint({
         baseConfig: {
           ...config,
           ...appPackageJson.eslint,
         },
         extensions: ['.ts', '.tsx', '.js', '.jsx'],
         fix: opts.fix,
-        ignorePattern: opts['ignore-pattern'],
       });
-      const report = cli.executeOnFiles(opts['_']);
+      const results = await eslint.lintFiles(opts['_']);
       if (opts.fix) {
-        CLIEngine.outputFixes(report);
+        ESLint.outputFixes(results);
       }
-      console.log(cli.getFormatter()(report.results));
+      console.log((await eslint.loadFormatter()).format(results));
       if (opts['report-file']) {
         await fs.outputFile(
           opts['report-file'],
-          cli.getFormatter('json')(report.results)
+          await (await eslint.loadFormatter('json')).format(results)
         );
       }
-      if (report.errorCount) {
+      if (results.reduce((a, b) => a + b.errorCount, 0)) {
         process.exit(1);
       }
-      if (report.warningCount > opts['max-warnings']) {
+      if (results.reduce((a, b) => a + b.warningCount, 0) > opts['max-warnings']) {
         process.exit(1);
       }
     }
