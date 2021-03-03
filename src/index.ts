@@ -126,8 +126,10 @@ prog
     // Helper fn to prompt the user for a different
     // folder name if one already exists
     async function getProjectPath(projectPath: string): Promise<string> {
-      const exists = await fs.pathExists(projectPath);
+      const exists = projectPath !== '.' && await fs.pathExists(projectPath);
       if (!exists) {
+        if (projectPath === '.') return process.cwd()
+
         return projectPath;
       }
 
