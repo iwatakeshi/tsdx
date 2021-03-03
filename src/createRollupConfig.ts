@@ -101,7 +101,6 @@ export async function createRollupConfig(
       // Respect tsconfig esModuleInterop when setting __esModule.
       esModule: Boolean(tsCompilerOptions?.esModuleInterop),
       name: opts.name || safeVariableName(opts.name),
-      sourcemap: true,
       globals: { react: 'React', 'react-native': 'ReactNative' },
       exports: 'named',
     },
@@ -166,7 +165,6 @@ export async function createRollupConfig(
             paths.appDist,
           ],
           compilerOptions: {
-            sourceMap: true,
             declaration: true,
             jsx: 'react',
           },
@@ -203,7 +201,6 @@ export async function createRollupConfig(
       sourceMaps(),
       shouldMinify &&
         terser({
-          sourcemap: true,
           output: { comments: false },
           compress: {
             keep_infinity: true,
