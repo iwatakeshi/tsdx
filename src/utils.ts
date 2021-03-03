@@ -15,10 +15,13 @@ export const safeVariableName = (name: string) =>
       .replace(/((^[^a-zA-Z]+)|[^\w.-])|([^a-zA-Z0-9]+$)/g, '')
   );
 
-export const safePackageName = (name: string) =>
-  name
-    .toLowerCase()
-    .replace(/(^@.*\/)|((^[^a-zA-Z]+)|[^\w.-])|([^a-zA-Z0-9]+$)/g, '');
+export const safePackageName = (name: string) => {
+  const normalize = (string: string) =>
+    string
+      .toLowerCase()
+      .replace(/(^@.*\/)|((^[^a-zA-Z]+)|[^\w.-])|([^a-zA-Z0-9]+$)/g, '');
+  return normalize(name === '.' ? path.basename(name) : name);
+};
 
 export const external = (id: string) =>
   !id.startsWith('.') && !path.isAbsolute(id);
@@ -26,7 +29,7 @@ export const external = (id: string) =>
 // Make sure any symlinks in the project folder are resolved:
 // https://github.com/facebookincubator/create-react-app/issues/637
 export const appDirectory = fs.realpathSync(process.cwd());
-export const resolveApp = function(relativePath: string) {
+export const resolveApp = function (relativePath: string) {
   return path.resolve(appDirectory, relativePath);
 };
 
