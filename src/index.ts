@@ -242,7 +242,9 @@ prog
     try {
       const cmd = await getInstallCmd();
       await execa(cmd, getInstallArgs(cmd, deps));
-      installSpinner.succeed('Installed dependencies');
+      // Initialize ts-jest
+      await execa('npx', ['ts-jest', 'config:init'])
+      installSpinner.succeed('Installed dependencies and initialized ts-jest');
       console.log(await Messages.start(pkg));
     } catch (error) {
       installSpinner.fail('Failed to install dependencies');
