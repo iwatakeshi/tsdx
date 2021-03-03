@@ -9,6 +9,9 @@ const basicTemplate: Template = {
     'typescript',
     'size-limit',
     '@size-limit/preset-small-lib',
+    'ts-jest',
+    '@types/jest',
+    'jest',
   ],
   packageJson: {
     // name: safeName,
@@ -44,17 +47,6 @@ const basicTemplate: Template = {
       },
     ],
     */
-    husky: {
-      hooks: {
-        'pre-commit': 'tsdx lint',
-      },
-    },
-    prettier: {
-      printWidth: 80,
-      semi: true,
-      singleQuote: true,
-      trailingComma: 'es5',
-    },
   },
 };
 
