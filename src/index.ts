@@ -15,4 +15,3 @@ const help = (yargs: yargs.Argv) => yargs.help();
 const argv = flow([bin, version, build, test, lint, create, watch, help])(
   parser()
 ).argv;
-// flow(parser, version, create, watch, build, lint, test, help);
