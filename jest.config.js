@@ -1,4 +1,5 @@
 module.exports = {
+  preset: 'ts-jest',
   testEnvironment: 'node',
   testMatch: ['<rootDir>/**/*(*.)@(test).[tj]s?(x)'],
   testPathIgnorePatterns: [
@@ -6,5 +7,7 @@ module.exports = {
     '<rootDir>/templates/', // don't run tests in the templates
     '<rootDir>/test/.*/fixtures/', // don't run tests in fixtures
     '<rootDir>/stage-.*/', // don't run tests in auto-generated (and auto-removed) test dirs
+    '<rootDir>/src/commands/test.ts',
+    '<rootDir>/dist/*',
   ],
 };
