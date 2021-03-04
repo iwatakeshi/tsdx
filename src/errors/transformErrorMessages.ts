@@ -6,11 +6,13 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import fs from 'fs';
+import * as fs from 'fs';
 import { invertObject } from './invertObject';
 import { evalToString } from './evalToString';
 import { addDefault } from '@babel/helper-module-imports';
+import { join } from 'path';
 import AppPath from '../utils/app-path';
+import * as JSONC from 'comment-json';
 export default function transformErrorMessages(babel: any) {
   const t = babel.types;
 
@@ -82,6 +84,7 @@ export default function transformErrorMessages(babel: any) {
           }
 
           // Avoid caching because we write it as we go.
+          const existingErrorMap = JSONC.parse(
             fs.readFileSync(AppPath.errors, 'utf-8')
           );
           const errorMap = invertObject(existingErrorMap);
