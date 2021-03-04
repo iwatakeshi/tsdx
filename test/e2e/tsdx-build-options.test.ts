@@ -18,7 +18,7 @@ describe('tsdx build :: options', () => {
 
   it('should compile all formats', () => {
     const output = execWithCache(
-      'node ../dist/index.js build --format cjs,esm,umd,system'
+      'node ../dist/src/index build --format cjs,esm,umd,system'
     );
 
     expect(shell.test('-f', 'dist/index.js')).toBeTruthy();
@@ -48,7 +48,7 @@ describe('tsdx build :: options', () => {
   });
 
   it('should not bundle regeneratorRuntime when targeting Node', () => {
-    const output = execWithCache('node ../dist/index.js build --target node');
+    const output = execWithCache('node ../dist/src/index build --target node');
     expect(output.code).toBe(0);
 
     const matched = grep(/regeneratorRuntime = r/, ['dist/build-default.*.js']);

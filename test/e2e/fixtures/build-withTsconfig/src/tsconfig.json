@@ -2,6 +2,7 @@
   // ensure that extends works (trailing comma & comment too)
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "declarationDir": "../typingsCustom/"
+    "declarationDir": "../typingsCustom/",
+    "noEmit": false
   }
 }

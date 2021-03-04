@@ -1,4 +1,4 @@
-const { safePackageName } = require('../../src/utils');
+import { safePackageName } from '../../src/utils';
 
 describe('utils | safePackageName', () => {
   it('should generate safe package name', () => {
