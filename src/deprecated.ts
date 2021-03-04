@@ -1,7 +1,6 @@
 import * as fs from 'fs-extra';
+import { join } from 'path';
 import AppPath from './utils/app-path';
-
-import { paths } from './constants';
 
 /*
   This was originally needed because the default
