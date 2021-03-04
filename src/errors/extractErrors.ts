@@ -5,15 +5,16 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import fs from 'fs-extra';
+import * as fs from 'fs-extra';
 import { parse, ParserOptions } from '@babel/parser';
 import traverse from '@babel/traverse';
 import { invertObject } from './invertObject';
 import { evalToString } from './evalToString';
-import { paths } from '../constants';
 import { safeVariableName } from '../utils';
 import { pascalCase } from 'pascal-case';
 import AppPath from '../utils/app-path';
+import { join } from 'path';
+import * as JSONC from 'comment-json';
 
 const babelParserOptions: ParserOptions = {
   sourceType: 'module',
@@ -47,7 +48,7 @@ export async function extractErrors(opts: any) {
     // Using `fs.readFile` instead of `require` here, because `require()`
     // calls are cached, and the cache map is not properly invalidated after
     // file changes.
-    existingErrorMap = JSON.parse(await fs.readFile(errorMapFilePath, 'utf8'));
+    existingErrorMap = JSONC.parse(await fs.readFile(errorMapFilePath, 'utf8'));
   } catch (e) {
     existingErrorMap = {};
   }
@@ -99,7 +100,7 @@ export async function extractErrors(opts: any) {
     // Output messages to ./errors/codes.json
     await fs.writeFile(
       errorMapFilePath,
-      JSON.stringify(invertObject(existingErrorMap), null, 2) + '\n',
+      JSONC.stringify(invertObject(existingErrorMap), null, 2) + '\n',
       'utf-8'
     );
 
@@ -119,7 +120,7 @@ export default ErrorDev;
     );
 
     await fs.writeFile(
-      paths.appErrors + '/ErrorProd.js',
+      join(AppPath.error_directory, 'ErrorProd.js'),
       `
 function ErrorProd(code) {
   // TODO: replace this URL with yours
