@@ -14,10 +14,8 @@
  *   { 0: 'MUCH ERROR', 1: 'SUCH WRONG' }
  */
 
-type Dict = { [key: string]: any };
-
-export function invertObject(targetObj: Dict) {
-  const result: Dict = {};
+export function invertObject(targetObj: Record<string, any>) {
+  const result: Record<string, any> = {};
   const mapKeys = Object.keys(targetObj);
 
   for (const originalKey of mapKeys) {
