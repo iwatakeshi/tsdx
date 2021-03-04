@@ -21,6 +21,7 @@ export function createJestConfig(
       require.resolve('jest-watch-typeahead/filename'),
       require.resolve('jest-watch-typeahead/testname'),
     ],
+    testPathIgnorePatterns: ['<rootDir>/dist/*'],
   };
 
   return config;

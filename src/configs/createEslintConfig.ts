@@ -1,8 +1,9 @@
-import fs from 'fs-extra';
+import * as fs from 'fs-extra';
 import path from 'path';
 import { ESLint } from 'eslint';
-import { PackageJson } from './types';
-import { getReactVersion } from './utils';
+import { PackageJson } from '../types';
+import { getReactVersion } from '../utils';
+import * as JSONC from 'comment-json';
 
 interface CreateEslintConfigArgs {
   pkg: PackageJson;
@@ -34,7 +35,7 @@ export async function createEslintConfig({
   try {
     await fs.writeFile(
       file,
-      `module.exports = ${JSON.stringify(config, null, 2)}`,
+      `module.exports = ${JSONC.stringify(config, null, 2)}`,
       { flag: 'wx' }
     );
   } catch (e) {

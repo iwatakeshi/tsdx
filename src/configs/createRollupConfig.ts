@@ -1,5 +1,4 @@
-import { safeVariableName, safePackageName, external } from './utils';
-import { paths } from './constants';
+import { safeVariableName, safePackageName, external } from '../utils';
 import { RollupOptions } from 'rollup';
 import { terser } from 'rollup-plugin-terser';
 import { DEFAULT_EXTENSIONS as DEFAULT_BABEL_EXTENSIONS } from '@babel/core';
@@ -13,12 +12,14 @@ import sourceMaps from 'rollup-plugin-sourcemaps';
 import typescript from 'rollup-plugin-typescript2';
 import ts from 'typescript';
 
-import { extractErrors } from './errors/extractErrors';
-import { babelPluginTsdx } from './babelPluginTsdx';
-import { TsdxOptions } from './types';
+import { extractErrors } from '../errors/extractErrors';
+import { babelPluginTsdx } from '../babelPluginTsdx';
+import { TsdxOptions } from '../types';
+import AppPath from '../utils/app-path';
+import * as JSONC from 'comment-json';
 
 const errorCodeOpts = {
-  errorMapFilePath: paths.appErrorsJson,
+  errorMapFilePath: AppPath.errors,
 };
 
 // shebang cache map thing because the transform only gets run once
@@ -37,7 +38,7 @@ export async function createRollupConfig(
     opts.minify !== undefined ? opts.minify : opts.env === 'production';
 
   const outputName = [
-    `${paths.appDist}/${safePackageName(opts.name)}`,
+    `${AppPath.dist_directory}/${safePackageName(opts.name)}`,
     opts.format,
     opts.env,
     shouldMinify ? 'min' : '',
@@ -46,7 +47,7 @@ export async function createRollupConfig(
     .filter(Boolean)
     .join('.');
 
-  const tsconfigPath = opts.tsconfig || paths.tsconfigJson;
+  const tsconfigPath = opts.tsconfig || AppPath.tsconfig;
   // borrowed from https://github.com/facebook/create-react-app/pull/7248
   const tsconfigJSON = ts.readConfigFile(tsconfigPath, ts.sys.readFile).config;
   // borrowed from https://github.com/ezolenko/rollup-plugin-typescript2/blob/42173460541b0c444326bf14f2c8c27269c4cb11/src/parse-tsconfig.ts#L48
@@ -162,7 +163,7 @@ export async function createRollupConfig(
             'node_modules',
             'bower_components',
             'jspm_packages',
-            paths.appDist,
+            AppPath.dist_directory,
           ],
           compilerOptions: {
             declaration: true,
@@ -195,7 +196,7 @@ export async function createRollupConfig(
       }),
       opts.env !== undefined &&
         replace({
-          'process.env.NODE_ENV': JSON.stringify(opts.env),
+          'process.env.NODE_ENV': JSONC.stringify(opts.env),
           preventAssignment: true,
         }),
       sourceMaps(),

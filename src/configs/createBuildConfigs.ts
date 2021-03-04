@@ -1,12 +1,9 @@
 import { RollupOptions, OutputOptions } from 'rollup';
-import * as fs from 'fs-extra';
-import { concatAllArray } from 'jpjs';
-
-import { paths } from './constants';
-import { TsdxOptions, NormalizedOpts } from './types';
-
+import { existsSync } from 'fs-extra';
+import { TsdxOptions, NormalizedOpts } from '../types';
 import { createRollupConfig } from './createRollupConfig';
-
+import AppPath from '../utils/app-path';
+import { flatten } from 'lodash';
 // check for custom tsdx.config.js
 let tsdxConfig = {
   rollup(config: RollupOptions, _options: TsdxOptions): RollupOptions {
@@ -14,14 +11,14 @@ let tsdxConfig = {
   },
 };
 
-if (fs.existsSync(paths.appConfig)) {
-  tsdxConfig = require(paths.appConfig);
+if (existsSync(AppPath.appconfig)) {
+  tsdxConfig = require(AppPath.appconfig);
 }
 
 export async function createBuildConfigs(
   opts: NormalizedOpts
-): Promise<Array<RollupOptions & { output: OutputOptions }>> {
-  const allInputs = concatAllArray(
+): Promise<Array<RollupOptions & { output?: OutputOptions }>> {
+  const inputs = flatten(
     opts.input.map((input: string) =>
       createAllFormats(opts, input).map(
         (options: TsdxOptions, index: number) => ({
@@ -35,7 +32,7 @@ export async function createBuildConfigs(
   );
 
   return await Promise.all(
-    allInputs.map(async (options: TsdxOptions, index: number) => {
+    inputs.map(async (options: TsdxOptions, index: number) => {
       // pass the full rollup config to tsdx.config.js override
       const config = await createRollupConfig(options, index);
       return tsdxConfig.rollup(config, options);
