@@ -24,11 +24,12 @@ export const safeVariableName = (name: string) =>
   );
 
 export const safePackageName = (name: string) => {
+  if (name === '.') return path.basename(path.resolve('.'));
   const normalize = (string: string) =>
     string
       .toLowerCase()
       .replace(/(^@.*\/)|((^[^a-zA-Z]+)|[^\w.-])|([^a-zA-Z0-9]+$)/g, '');
-  return normalize(name === '.' ? path.basename(name) : name);
+  return normalize(name);
 };
 
 export const external = (id: string) =>
@@ -178,10 +179,9 @@ export async function getProjectPath(
   path: string,
   spinner: ora.Ora
 ): Promise<string> {
-  const exists = path !== '.' && (await fs.pathExists(path));
+  if (name === '.') return process.cwd();
+  const exists = await fs.pathExists(path);
   if (!exists) {
-    if (path === '.') return process.cwd();
-
     return path;
   }
 

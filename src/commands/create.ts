@@ -2,7 +2,6 @@ import yargs from 'yargs';
 import { templates } from '../templates';
 import chalk from 'chalk';
 import { LOGO } from '../constants';
-import pkg from '../../package.json';
 import ora from 'ora';
 import * as fs from 'fs-extra';
 import { Input, Select } from 'enquirer';
@@ -42,9 +41,10 @@ export default function create(yargs: yargs.Argv<{}>): yargs.Argv<{}> {
     },
     async (args) => {
       console.log(chalk.blue(LOGO));
-      let name = args._[0] as string;
+      let name = args.library as string;
       const spinner = ora(`Creating ${chalk.bold.green(name)}...`);
       let template = '';
+      const safeName = safePackageName(name);
       try {
         // get the project path
         const realPath = await fs.realpath(process.cwd());
@@ -72,7 +72,7 @@ export default function create(yargs: yargs.Argv<{}>): yargs.Argv<{}> {
         spinner.start();
         // copy the template
         await fs.copy(
-          path.resolve(__dirname, `../templates/${template}`),
+          path.resolve(__dirname, `../../../templates/${template}`),
           projectPath,
           {
             overwrite: true,
@@ -115,7 +115,6 @@ export default function create(yargs: yargs.Argv<{}>): yargs.Argv<{}> {
 
         // Install deps
         process.chdir(projectPath);
-        const safeName = safePackageName(name);
         const pkgJson = generatePackageJson({ name: safeName, author });
 
         const nodeVersionReq = getNodeEngineRequirement(pkgJson);
@@ -128,10 +127,10 @@ export default function create(yargs: yargs.Argv<{}>): yargs.Argv<{}> {
         }
 
         await fs.outputJSON(path.resolve(projectPath, 'package.json'), pkgJson);
-        spinner.succeed(`Created ${chalk.bold.green(pkg)}`);
-        await messages.start(name);
+        spinner.succeed(`Created ${chalk.bold.green(safeName)}`);
+        await messages.start(safeName);
       } catch (error) {
-        spinner.fail(`Failed to create ${chalk.bold.red(pkg)}`);
+        spinner.fail(`Failed to create ${chalk.bold.red(safeName)}`);
         logError(error);
         process.exit(1);
       }
