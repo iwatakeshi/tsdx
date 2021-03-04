@@ -1,6 +1,7 @@
 import React from 'react';
 import { Logo } from 'components/logo';
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default {
   github: 'https://github.com/formium/tsdx',
   titleSuffix: ' – TSDX',

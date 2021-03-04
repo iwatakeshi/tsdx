@@ -33,7 +33,7 @@ Examples
   $ tsdx watch --onFirstSuccess "echo The first successful build!"
   $ tsdx watch --onSuccess "echo Successful build!"
   $ tsdx watch --onFailure "echo The build failed!"
-  $ tsdx watch --transpileOnly
+  $ tsdx watch --transpile-only
 ```
 
 ## `tsdx build`
@@ -52,7 +52,7 @@ Options
   --format              Specify module format(s)  (default cjs,esm)
   --extractErrors       Opt-in to extracting invariant error codes
   --tsconfig            Specify your custom tsconfig path (default <root-folder>/tsconfig.json)
-  --transpileOnly       Skip type checking
+  --transpile-only       Skip type checking
   -h, --help            Displays this message
 
 Examples
@@ -62,7 +62,7 @@ Examples
   $ tsdx build --format cjs,esm,umd
   $ tsdx build --extractErrors
   $ tsdx build --tsconfig ./tsconfig.foo.json
-  $ tsdx build --transpileOnly
+  $ tsdx build --transpile-only
 ```
 
 ## `tsdx test`
