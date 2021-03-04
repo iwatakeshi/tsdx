@@ -2,7 +2,7 @@ import fs from 'fs-extra';
 import path from 'path';
 import camelCase from 'camelcase';
 
-import { PackageJson } from './types';
+import AppPath from './utils/app-path';
 
 // Remove the package name scope if it exists
 export const removeScope = (name: string) => name.replace(/^@.*\//, '');
@@ -54,3 +54,5 @@ export function getReactVersion({
 export function getNodeEngineRequirement({ engines }: PackageJson) {
   return engines && engines.node;
 }
+
+              ((await isDir(AppPath.resolve('src'))) &&

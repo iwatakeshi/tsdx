@@ -10,8 +10,7 @@ import fs from 'fs';
 import { invertObject } from './invertObject';
 import { evalToString } from './evalToString';
 import { addDefault } from '@babel/helper-module-imports';
-import { paths } from '../constants';
-
+import AppPath from '../utils/app-path';
 export default function transformErrorMessages(babel: any) {
   const t = babel.types;
 
@@ -52,7 +51,7 @@ export default function transformErrorMessages(babel: any) {
           // Import ReactError
           const reactErrorIdentfier = addDefault(
             path,
-            paths.appRoot + '/errors/ErrorDev.js',
+            join(AppPath.root_directory, '/errors/ErrorDev.js'),
             {
               nameHint: 'InvariantError',
             }
@@ -83,8 +82,7 @@ export default function transformErrorMessages(babel: any) {
           }
 
           // Avoid caching because we write it as we go.
-          const existingErrorMap = JSON.parse(
-            fs.readFileSync(paths.appErrorsJson, 'utf-8')
+            fs.readFileSync(AppPath.errors, 'utf-8')
           );
           const errorMap = invertObject(existingErrorMap);
 
@@ -117,7 +115,7 @@ export default function transformErrorMessages(babel: any) {
           // Import ReactErrorProd
           const reactErrorProdIdentfier = addDefault(
             path,
-            paths.appRoot + '/errors/ErrorProd.js',
+            join(AppPath.root_directory, '/errors/ErrorProd.js'),
             {
               nameHint: 'InvariantErrorProd',
             }

@@ -13,6 +13,7 @@ import { evalToString } from './evalToString';
 import { paths } from '../constants';
 import { safeVariableName } from '../utils';
 import { pascalCase } from 'pascal-case';
+import AppPath from '../utils/app-path';
 
 const babelParserOptions: ParserOptions = {
   sourceType: 'module',
@@ -93,7 +94,7 @@ export async function extractErrors(opts: any) {
   async function flush() {
     const prettyName = pascalCase(safeVariableName(opts.name));
     // Ensure that the ./src/errors directory exists or create it
-    await fs.ensureDir(paths.appErrors);
+    await fs.ensureDir(AppPath.error_directory);
 
     // Output messages to ./errors/codes.json
     await fs.writeFile(
@@ -104,7 +105,7 @@ export async function extractErrors(opts: any) {
 
     // Write the error files, unless they already exist
     await fs.writeFile(
-      paths.appErrors + '/ErrorDev.js',
+      join(AppPath.error_directory, 'ErrorDev.js'),
       `
 function ErrorDev(message) {
   const error = new Error(message);
