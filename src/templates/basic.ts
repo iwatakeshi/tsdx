@@ -18,7 +18,7 @@ const basicTemplate: Template = {
     version: '0.1.0',
     license: 'MIT',
     // author: author,
-    main: 'dist/src/index',
+    main: 'dist/index',
     // module: `dist/${safeName}.esm.js`,
     typings: `dist/index.d.ts`,
     files: ['dist', 'src'],
