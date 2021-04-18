@@ -1,5 +1,5 @@
 {
-  "name": "@prismify-co/tsdx",
+  "name": "@prismify/tsdx",
   "version": "0.0.0",
   "author": "Takeshi Iwana <iwatakeshi@gmail.com>",
   "description": "Zero-config TypeScript package development",
