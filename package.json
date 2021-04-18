@@ -25,14 +25,12 @@
   "scripts": {
     "prepare": "tsc -p tsconfig.json",
     "build": "tsc -p tsconfig.json",
-    "lint": "yarn build && yarn lint:post-build",
+    "lint": "npm run build && npm run lint:post-build",
     "lint:post-build": "node dist/src/index.js lint ./ --ignore-pattern 'test/e2e/fixtures/**/*'",
-    "test": "yarn build && yarn test:post-build",
+    "test": "npm run build && npm run test:post-build",
     "test:post-build": "node dist/src/index.js test",
     "start": "tsc -p tsconfig.json --watch",
-    "release": "np",
-    "deduplicate": "yarn-deduplicate -s fewer yarn.lock",
-    "deduplicate:check": "yarn-deduplicate -s fewer yarn.lock --list --fail"
+    "release": "np"
   },
   "files": [
     "dist",
@@ -126,8 +124,7 @@
     "tiny-invariant": "^1.1.0",
     "tiny-warning": "^1.0.3",
     "ts-jest": "^26.5.5",
-    "typescript": "^4.2.4",
-    "yarn-deduplicate": "^3.1.0"
+    "typescript": "^4.2.4"
   },
   "prettier": {
     "printWidth": 80,
