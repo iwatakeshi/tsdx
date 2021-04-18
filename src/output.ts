@@ -1,6 +1,8 @@
-import { eraseLine } from 'ansi-escapes';
+import ansiEscapes from 'ansi-escapes';
 import chalk from 'chalk';
 import ora from 'ora';
+
+const { eraseLine } = ansiEscapes;
 
 // This was copied from Razzle. Lots of unused stuff.
 export const info = (msg: string) => {
