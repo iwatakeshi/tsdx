@@ -6,9 +6,9 @@ export function createJestConfig(
   _: (relativePath: string) => void,
   rootDir: string
 ): JestConfigOptions {
-  const config: JestConfigOptions = {
+  return {
     transform: {
-      '.(ts|tsx)$': require.resolve('ts-jest/dist'),
+      '.(ts|tsx)$': require.resolve('ts-jest'),
       '.(js|jsx)$': require.resolve('babel-jest'), // jest's default
     },
     transformIgnorePatterns: ['[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$'],
@@ -23,6 +23,4 @@ export function createJestConfig(
     ],
     testPathIgnorePatterns: ['<rootDir>/dist/*'],
   };
-
-  return config;
 }
