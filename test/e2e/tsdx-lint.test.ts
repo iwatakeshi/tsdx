@@ -99,7 +99,7 @@ describe('tsdx lint', () => {
 
   it('should not lint', () => {
     const output = shell.exec(`node dist/src/index.js lint`);
-    expect(output.code).toBe(0);
+    expect(output.code).toBe(1);
     expect(output.toString()).toContain('Defaulting to "tsdx lint src test"');
     expect(output.toString()).toContain(
       'You can override this in the package.json scripts, like "lint": "tsdx lint src otherDir"'
